@@ -1,3 +1,1468 @@
-<body style="display:grid;place-items:center;min-height:100dvh">
-  <h1 style="font-family:ui-monospace,monospace;text-align:center;">index of {subdomain}.timagineer.com</h1>
+<!doctype html>
+<html lang=en>
+<meta charset=utf-8>
+<meta content="width=device-width,initial-scale=1" name=viewport>
+<title>Huey—HSL Color Toy</title>
+<style>
+:root {
+    --hue:;
+    --saturation:;
+    --lightness:;
+    --color-canvas: hsl(var(--hue), calc(var(--saturation) * 1%), calc(var(--lightness) * 1%));
+    --color-light: hsl(var(--hue), 80%, 95%);
+    --color-dark: hsl(var(--hue), 80%, 25%);
+    --color-action-default: hsl(var(--hue), 80%, 98%);
+    --color-action-hover: hsl(var(--hue), 40%, 87%);
+    --color-action-active: hsl(var(--hue), 35%, 80%);
+    --color-code: hsl(var(--hue), 20%, 85%);
+    --color-shadow: var(--hue) 3% 10%;
+    --typography-typeface-monospace: ui-monospace, monospace;
+    --typography-typeface-sans-serif: system-ui, sans-serif;
+    --typography-size-13-16: clamp(0.8125rem, 0.7589rem + 0.2679vw, 1rem);
+    --typography-size-15-20: clamp(0.9141rem, 0.8181rem + 0.4799vw, 1.25rem);
+    --typography-size-16-25: clamp(1.0283rem, 0.8757rem + 0.7631vw, 1.5625rem);
+    --typography-size-19-31: clamp(1.1569rem, 0.9294rem + 1.1375vw, 1.9531rem);
+    --typography-size-34-48: clamp(2.125rem, 1.875rem + 1.25vw, 3rem);
+    --typography-size-27-61: clamp(1.6472rem, 1.0279rem + 3.0965vw, 3.8147rem);
+    --typography-leading-open: 1.5;
+    --typography-leading-tight: 1;
+    --typography-tracking-caps: 0.01cap;
+    --typography-tracking-mono: -0.4ch;
+    --spacing-2xs: clamp(0.1875rem, 0.0982rem + 0.4464vw, 0.5rem);
+    --spacing-xs: clamp(0.4375rem, 0.4196rem + 0.0893vw, 0.5rem);
+    --spacing-s: clamp(0.4375rem, 0.3482rem + 0.4464vw, 0.75rem);
+    --spacing-m: clamp(0.4375rem, 0.2768rem + 0.8036vw, 1rem);
+    --spacing-l: clamp(1.25rem, 1.1786rem + 0.3571vw, 1.5rem);
+    --spacing-xl: clamp(1.625rem, 1.5179rem + 0.5357vw, 2rem);
+    --spacing-2xl: clamp(1.625rem, 1.2321rem + 1.9643vw, 3rem);
+    --spacing-l-xl: clamp(1.25rem, 1.0357rem + 1.0714vw, 2rem);
+    --spacing-xl-2xl: clamp(2rem, 1.7143rem + 1.4286vw, 3rem);
+    --circle: 50%;
+    --corner: .6rem;
+    --diameter: 35vmin;
+    --shadow-strength: 1%;
+    --shadow:
+    0 -2px 5px 0 hsl(var(--color-shadow) / calc(var(--shadow-strength) + 2%)), 0 1px 1px -2px hsl(var(--color-shadow) / calc(var(--shadow-strength) + 3%)), 0 2px 2px -2px hsl(var(--color-shadow) / calc(var(--shadow-strength) + 3%)), 0 5px 5px -2px hsl(var(--color-shadow) / calc(var(--shadow-strength) + 4%)), 0 9px 9px -2px hsl(var(--color-shadow) / calc(var(--shadow-strength) + 5%)), 0 16px 16px -2px hsl(var(--color-shadow) / calc(var(--shadow-strength) + 6%));
+    --top: 999;
+    --ease-io-circular: cubic-bezier(0.785, 0.135, 0.15, 0.86);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    min-block-size: 100vh;
+    min-block-size: 100dvh;
+    -moz-text-size-adjust: none;
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+}
+
+body {
+    background-color: var(--color-canvas);
+    font-family: var(--typography-typeface-sans-serif);
+    font-size: var(--typography-size-15-20);
+    line-height: var(--typography-leading-open);
+    min-block-size: 100vh;
+    min-block-size: 100dvh;
+    transition: background-color 120ms;
+}
+
+h1 {
+    background-color: var(--color-dark);
+    border-radius: 0 0 var(--corner) var(--corner);
+    color: var(--color-action-default);
+    cursor: pointer;
+    font-family: var(--typography-typeface-monospace);
+    font-size: var(--typography-size-34-48);
+    line-height: var(--typography-leading-tight);
+    padding-block: .5rem .8rem;
+    padding-inline: var(--spacing-l);
+    transition-duration: 120ms;
+    transition-property: transform, color;
+    transition-timing-function: ease-in-out;
+    user-select: none;
+}
+
+:where(h1:hover, h1.mode-transitioning) {
+    color: var(--color-action-hover);
+    transform: scale(1.05);
+}
+
+h1:active, h1:focus-visible {
+    color: var(--color-action-default);
+    transform: scale(1.1);
+}
+
+h2 {
+    font-size: var(--typography-size-19-31);
+    letter-spacing: var(--typography-tracking-caps);
+    line-height: var(--typography-leading-tight);
+    text-transform: uppercase;
+}
+
+h3 {
+    font-size: var(--typography-size-16-25);
+}
+
+p {
+    font-size: var(--typography-size-15-20);
+    -webkit-hyphens: auto;
+    -webkit-hyphenate-limit-before: 3;
+    -webkit-hyphenate-limit-after: 3;
+    -webkit-hyphenate-limit-chars: 6 3 3;
+    -webkit-hyphenate-limit-lines: 2;
+    -webkit-hyphenate-limit-last: always;
+    -webkit-hyphenate-limit-zone: 8%;
+    hyphens: auto;
+    hyphenate-limit-chars: 6 3 3;
+    hyphenate-limit-lines: 2;
+    hyphenate-limit-last: always;
+    hyphenate-limit-zone: 8%;
+}
+
+ul {
+    list-style-type: none;
+}
+
+footer small {
+    background-color: var(--color-dark);
+    color: var(--color-light);
+    display: inline-block;
+    font-size: var(--typography-size-13-16);
+    padding-block: var(--spacing-2xs);
+    padding-inline: var(--spacing-m)
+}
+
+button {
+    align-items: center;
+    background-color: var(--color-action-default);
+    border: 3px solid var(--color-dark);
+    border-radius: var(--circle);
+    box-shadow: var(--shadow);
+    color: var(--color-dark);
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    padding: var(--spacing-xs);
+    margin: var(--spacing-s);
+    touch-action: manipulation;
+    transition-property: background-color, outline;
+    transition-duration: 120ms;
+    transition-timing-function: ease-in-out
+}
+
+button:hover {
+    background-color: var(--color-action-hover)
+}
+
+:where(button:active, button:focus-visible) {
+    outline: 5px solid hsla(var(--hue) 80% 25% / .5);
+    outline-offset: -1px
+}
+
+button:active {
+    background-color: var(--color-action-active)
+}
+
+main {
+    position: relative;
+    height: var(--diameter);
+    width: var(--diameter)
+}
+
+fieldset {
+    --cell-size: fit-content;
+    --offset: calc(360deg / var(--i-count));
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: grid;
+    grid: var(--cell-size) /var(--cell-size);
+    place-content: center;
+    height: 100%;
+    width: 100%;
+    border: none;
+    padding: 0;
+}
+
+fieldset > * {
+    grid-area: 1/1
+}
+
+input {
+    --angle: calc((var(--i) * var(--offset)) - 90deg);
+    appearance: none;
+    border-radius: var(--circle);
+    cursor: pointer;
+    height: 2.75rem;
+    width: 2.75rem;
+    touch-action: manipulation;
+    transform: translate3d(calc(cos(var(--angle)) * var(--diameter)), calc(sin(var(--angle)) * var(--diameter)), 0);
+    will-change: transform;
+    transition: transform 480ms var(--ease-io-circular), background-color 480ms ease-out;
+}
+
+:where(input:checked, input:focus-visible) {
+    outline: 3px solid var(--color-light);
+    z-index: var(--top);
+    transition: transform 480ms var(--ease-io-circular), background-color 480ms ease-out, outline 0.1s ease-out;
+}
+
+input:focus {
+    z-index: var(--top)
+}
+
+.transition-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--circle);
+    background: transparent;
+    border: none;
+    box-shadow: 0 0 0 3px hsla(var(--hue), 80%, 95%, 0.7);
+    z-index: var(--top);
+    pointer-events: none;
+    transform-origin: center;
+    opacity: 1;
+}
+
+@keyframes rotateIndicator {
+    from {
+        transform: translate(-50%, -50%) rotate(var(--start-angle)) translateX(var(--diameter));
+    }
+
+    to {
+        transform: translate(-50%, -50%) rotate(var(--end-angle)) translateX(var(--diameter));
+    }
+}
+
+.transition-indicator.animate {
+    animation: rotateIndicator 480ms var(--ease-io-circular) forwards;
+    animation-fill-mode: forwards;
+}
+
+.transition-indicator.fade-out {
+    opacity: 0;
+    transition: opacity 0.2s ease-out;
+}
+
+fieldset.mode-transitioning {
+    pointer-events: none;
+}
+
+fieldset.mode-transitioning input {
+    transition: transform 480ms var(--ease-io-circular), background-color 480ms ease-out;
+}
+
+.mode-hue input, .mode-saturation input, .mode-lightness input {
+    transition: background-color 480ms ease-out;
+}
+
+.mode-hue input {
+    background-color: hsl(calc(var(--i) * 1deg), 100%, 50%);
+}
+
+.mode-saturation input {
+    background-color: hsl(var(--hue), calc(var(--i) * 1%), 50%);
+}
+
+.mode-lightness input {
+    background-color: hsl(var(--hue), calc(var(--saturation) * 1%), calc(var(--i) * 1%));
+}
+
+.value-display {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 100%;
+    width: 100%;
+    overflow: visible;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: var(--top);
+}
+
+text {
+    fill: var(--color-light);
+    font-family: var(--typography-typeface-monospace);
+    font-weight: 700;
+    dominant-baseline: central;
+    text-anchor: middle;
+    paint-order: stroke;
+    stroke: var(--color-dark);
+    stroke-width: 2px;
+    stroke-linejoin: round;
+}
+
+dialog {
+    background-color: var(--color-light);
+    border-width: 3px;
+    border-radius: var(--corner);
+    box-shadow: var(--shadow);
+    color: var(--color-dark);
+    margin-block: auto !important;
+    max-inline-size: 58rem !important;
+    padding-block: var(--spacing-xl-2xl);
+    padding-inline: var(--spacing-l-xl);
+    z-index: var(--top);
+}
+
+dialog * {
+    text-align: left;
+}
+
+:where(dialog)::backdrop {
+    background: hsla(0, 0%, 0%, 0.35);
+}
+
+:where(dialog), :where(dialog)::backdrop {
+    opacity: 0;
+    transition-behavior: allow-discrete;
+    transition-duration: 360ms;
+    transition-property: opacity, overlay;
+    transition-timing-function: ease-in-out;
+}
+
+:where(dialog[open]), :where(dialog[open])::backdrop {
+    opacity: 1;
+}
+
+@starting-style {
+    :where(dialog[open]), :where(dialog[open])::backdrop {
+        opacity: 0;
+    }
+}
+
+a {
+    color: currentColor;
+    text-decoration-color: currentColor;
+    text-underline-offset: 0.25ex;
+    text-decoration-thickness: 0.1ex
+}
+
+a:hover {
+    text-decoration-thickness: 0.15ex
+}
+
+:where(abbr[title]) {
+    cursor: help;
+    font-variant-caps: all-small-caps;
+    text-decoration-line: underline;
+    text-decoration-style: dotted
+}
+
+:where(i, var) {
+    font-variant-caps: all-small-caps;
+    font-style: normal;
+}
+
+code {
+    background-color: var(--color-code);
+    color: var(--color-dark);
+    border-radius: var(--corner);
+    padding-block: .1em;
+    padding-inline: .2em;
+    text-wrap: nowrap;
+}
+
+footer a {
+    padding-inline: var(--spacing-m);
+    text-decoration: none;
+}
+
+footer small:nth-of-type(3) a {
+    padding-inline: 0;
+    text-decoration: underline;
+}
+
+footer small:first-of-type {
+    border-top-right-radius: var(--corner);
+}
+
+footer small:last-of-type {
+    border-top-left-radius: var(--corner);
+}
+
+footer small:nth-of-type(2) {
+    border-top-right-radius: var(--corner);
+    border-top-left-radius: var(--corner);
+    font-weight: 700;
+    padding-inline: 0;
+    transition-duration: 120ms;
+    transition-property: transform, color;
+    transition-timing-function: ease-in-out;
+}
+
+footer small:nth-of-type(2):hover {
+    color: var(--color-action-hover);
+    transform: scale(1.05);
+}
+
+footer small:nth-of-type(2):active, footer small:nth-of-type(2):focus-visible {
+    color: var(--color-action-default);
+    transform: scale(1.1);
+}
+
+.center {
+    box-sizing: content-box;
+    margin-inline: auto;
+    max-inline-size: none;
+    text-align: center
+}
+
+.cover {
+    display: flex;
+    flex-direction: column;
+    min-block-size: 100vh
+}
+
+.cover > * {
+    margin-block: 0
+}
+
+.cover > :first-child:not(main) {
+    margin-block-start: 0
+}
+
+.cover > :last-child:not(main) {
+    margin-block-end: 0
+}
+
+.cover > main {
+    margin-block: auto
+}
+
+.with-icon {
+    display: inline-flex;
+    align-items: center
+}
+
+.icon {
+    height: 2.6cap;
+    width: 2.6cap;
+    transition: opacity 300ms ease-in-out 240ms;
+}
+
+dialog .icon {
+    height: 1.6cap;
+    width: 1.6cap;
+}
+
+.with-icon .icon {
+    margin-inline-end: 0
+}
+
+.icon-check {
+    opacity: 0;
+    position: absolute
+}
+
+.copy-success .icon-copy {
+    opacity: 0
+}
+
+.copy-success .icon-check {
+    opacity: 1
+}
+
+.stack-x {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-m);
+    align-items: flex-start;
+    justify-content: space-between
+}
+
+[class^='stack-y'] {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+[class^='stack-y'] > * {
+    margin-block: 0;
+}
+
+.stack-y-2xs > * + * {
+    margin-block-start: var(--spacing-2xs);
+}
+
+.stack-y-xs > * + * {
+    margin-block-start: var(--spacing-xs);
+}
+
+.stack-y-s > * + * {
+    margin-block-start: var(--spacing-s)
+}
+
+.stack-y-m > * + * {
+    margin-block-start: var(--spacing-m);
+}
+
+.stack-y-l > * + * {
+    margin-block-start: var(--spacing-l);
+}
+
+.stack-y-xl > * + * {
+    margin-block-start: var(--spacing-xl);
+}
+
+.stack-y-2xl > * + * {
+    margin-block-start: var(--spacing-2xl);
+}
+
+.aic {
+    align-items: center;
+}
+
+.m0 {
+    margin: 0;
+}
+
+.mbs2xs {
+    margin-block-start: var(--spacing-2xs);
+}
+
+.ttm {
+    letter-spacing: var(--typography-tracking-mono);
+}
+
+.vh:not(:focus):not(:active):not(:focus-within) {
+    clip-path: inset(50%);
+    block-size: 1px;
+    inline-size: 1px;
+    overflow: hidden;
+    position: absolute !important;
+    white-space: nowrap
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, * ::before, * ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+</style>
+<script defer src=https://assets.timagineer.com/src/date.js></script>
+<meta content=yes name=mobile-web-app-capable>
+<meta content=black name=apple-mobile-web-app-status-bar-style>
+<meta content="Timothy Martens" name=author>
+<meta content="Huey—HSL Color Toy" name=description>
+
+<body class="center cover">
+
+    <header class=stack-x>
+        <button class=with-icon id=random-btn title="Random Color">
+            <svg aria-hidden=true class=icon>
+                <use href=#icon-random></use>
+            </svg>
+            <span class=vh>Randomize</span>
+        </button>
+        <h1 class=mode-title title="Switch Modes">H</h1>
+        <button class=with-icon id=copy-btn title="Copy Color">
+            <svg aria-hidden=true class="icon icon-copy">
+                <use href=#icon-copy></use>
+            </svg>
+            <svg aria-hidden=true class="icon icon-check">
+                <use href=#icon-check></use>
+            </svg>
+            <span class=vh>Copy/Confirm Copy</span>
+        </button>
+    </header>
+
+    <main class=center>
+        <fieldset aria-describedby=color-instructions aria-label="Color component selector" aria-labelledby=mode-title role=radiogroup style=--i-count:360></fieldset>
+        <svg aria-hidden="true" class="value-display" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" font-size="61">
+            <text class="component-value" x="50" y="50">360</text>
+        </svg>
+    </main>
+
+    <footer class=stack-x>
+        <small>
+            <i>HUE</i>
+            y—
+            <abbr title="Hue, Saturation, Lightness">HSL</abbr>
+             color toy
+        </small>
+        <small>
+            <a title="About this app" href="#" id="info">?</a>
+        </small>
+        <small>
+           <span>&copy;&apos;<time></time> <a href="https://timagineer.com">Timagineer</a></span>
+        </small>
+    </footer>
+
+    <dialog id="dialog" role="dialog" class="center stack-y-l is a web toy that teaches HSL color through visual interaction. HSL stands for Hue, Saturation, Light">
+
+        <header class="stack-x aic">
+            <h2>About</h2>
+            <button class="with-icon m0" id=close title="Close Modal">
+                <svg aria-hidden=true class=icon>
+                    <use href=#icon-close></use>
+                </svg>
+                <span class=vh>Close</span>
+            </button>
+        </header>
+
+        <section class="stack-y-m" id="color-instructions">
+
+            <p>
+                <i>HUE</i>
+                y is a web toy that teaches 
+                <a href="https://en.wikipedia.org/wiki/HSL_and_HSV">
+                    <abbr title="Hue, Saturation, Lightness">HSL</abbr>
+                     color
+                </a>
+                 through visual interaction. 
+                <abbr title="Hue, Saturation, Lightness">HSL</abbr>
+                 stands for 
+                <strong>Hue</strong>
+                , 
+                <strong>Saturation</strong>
+                , 
+                <strong>Lightness</strong>
+                . In 
+                <abbr title="Cascading Style Sheets">CSS</abbr>
+                , you write 
+                <abbr title="Hue, Saturation, Lightness">HSL</abbr>
+                 colors as 
+                <code>
+                    hsl(H S L
+                    <span class="ttm">)</span>
+                </code>
+                . 
+                <i>HUE</i>
+                y&apos;s color is 
+                <code id="hueyColor">
+                    hsl(deg &percnt; &percnt;
+                    <span class="ttm">)</span>
+                </code>
+                .
+            </p>
+
+            <h3>Understanding HSL</h3>
+
+            <p class="mbs2xs">
+                <strong>Hue</strong>
+                 refers to a color&apos;s name, e.g., red, yellow, blue. Hue is a spectral wavelength, expressed as an angle and measured in degrees from 0° to 360°.
+                <br>
+                <strong>Saturation</strong>
+                 governs a color&apos;s intensity, measured as a percentage from 0% to 100%. At 0% saturation, colors becomes pure gray. 100% saturation is the most vibrant version of a color.
+                <br>
+                <strong>Lightness</strong>
+                , also measured from 0% to 100%, determines how bright or dark a color is. 0% lightness is black. 100% lightness is white.
+                            
+            </p>
+
+            <h3>How to operate HUEy</h3>
+            <ul class="mbs2xs">
+                <li>
+                    <strong>Switch modes</strong>
+                    : click the H/S/L header, press tab or &apos;h&apos;, &apos;s&apos;, &apos;l&apos;
+                </li>
+                <li>
+                    <strong>Adjust values</strong>
+                    : click, click and drag, or use arrow keys (&apos;&uarr;&apos;, &apos;&darr;&apos;, &apos;&larr;&apos;, &apos;&rarr;&apos;)
+                </li>
+                <li>
+                    <strong>Accelerate</strong>
+                    : hold down arrow keys for quicker changes
+                </li>
+                <li>
+                    <strong>Get inspired</strong>
+                    : press &apos;r&apos; or click the Random Color button
+                </li>
+                <li>
+                    <strong>Copy color</strong>
+                    : press &apos;c&apos; or click the Copy Color button
+                </li>
+            </ul>
+
+            <p>
+                Share your 
+                <i>HUE</i>
+                y color discoveries on 
+                <a href="https://www.linkedin.com/in/timothyfmartens/" target="_blank">LinkedIn</a>
+                !
+            </p>
+
+        </section>
+
+    </dialog>
+
+    <svg aria-hidden=true class=vh xmlns=http://www.w3.org/2000/svg display=none height=0 width=0 xmlns:xlink=http://www.w3.org/1999/xlink>
+        <defs>
+            <symbol id=icon-random title="Random Color Icon" viewBox="0 0 256 256">
+                <path d="M32 72h23.06a64 64 0 0 1 52.08 26.8l41.72 58.4a64 64 0 0 0 52.08 26.8H232M208 48l24 24-24 24" fill=none stroke=currentColor stroke-linecap=round stroke-linejoin=round stroke-width=24/>
+                <path d="m208 160 24 24-24 24M152.77 93.86A64 64 0 0 1 200.94 72H232M32 184h23.06a64 64 0 0 0 48.17-21.86" fill=none stroke=currentColor stroke-linecap=round stroke-linejoin=round stroke-width=24/>
+            </symbol>
+            <symbol id=icon-copy title="Copy Color Icon" viewBox="0 0 256 256">
+                <path d="M0 0h256v256H0z" fill=none/>
+                <path d="M40 76h140v140H40z" fill=none stroke=currentColor stroke-linecap=round stroke-linejoin=round stroke-width=24/>
+                <path d="M76 40h140v140" fill=none stroke=currentColor stroke-linecap=round stroke-linejoin=round stroke-width=24/>
+            </symbol>
+            <symbol id=icon-check title="Confirm Copy Color Icon" viewBox="0 0 256 256">
+                <path d="m40 144 56 56L224 72" fill=none stroke=currentColor stroke-linecap=round stroke-linejoin=round stroke-width=24/>
+            </symbol>
+            <symbol id=icon-close title="Close Icon" viewBox="0 0 256 256">
+                <path fill="none" d="M0 0h256v256H0z"/>
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24" d="M200 56 56 200M200 200 56 56"/>
+            </symbol>
+        </defs>
+    </svg>
+
+    <script>
+    const elements = {
+        showBtn: document.getElementById("info"),
+        closeBtn: document.getElementById("close"),
+        dialog: document.getElementById("dialog")
+    };
+    elements.showBtn && elements.dialog && elements.showBtn.addEventListener("click", (() => {
+        elements.dialog.showModal()
+    })),
+    elements.closeBtn && elements.dialog && elements.closeBtn.addEventListener("click", (() => {
+        elements.dialog.close()
+    }));
+    const MODES = Object.freeze(["hue", "saturation", "lightness"]),
+        MODE_RANGES = Object.freeze({
+            hue: {
+                min: 1,
+                max: 360
+            },
+            saturation: {
+                min: 0,
+                max: 100
+            },
+            lightness: {
+                min: 0,
+                max: 100
+            }
+        }),
+        MODE_LABELS = Object.freeze({
+            hue: "H",
+            saturation: "S",
+            lightness: "L"
+        }),
+        KEY_HOLD_DELAY = 1200,
+        generateInitialRandomColor = () => {
+            const t = Math.floor(360 * Math.random()) + 1,
+                e = Math.floor(101 * Math.random()),
+                s = Math.floor(101 * Math.random()),
+                n = document.documentElement;
+            return n.style.setProperty("--hue", t), n.style.setProperty("--saturation", e), n.style.setProperty("--lightness", s), n.style.setProperty("--color-canvas", `hsl(${t}, ${e}%, ${s}%)`), {
+                hue: t,
+                saturation: e,
+                lightness: s
+            }
+        },
+        initialColor = generateInitialRandomColor(),
+        utils = {
+            debounce(t, e) {
+                let s;
+                return (...n) => {
+                    clearTimeout(s),
+                    s = setTimeout((() => t.apply(this, n)), e)
+                }
+            },
+            hslToRgb(t, e, s) {
+                e /= 100,
+                s /= 100;
+                const n = (1 - Math.abs(2 * s - 1)) * e,
+                    o = n * (1 - Math.abs(t / 60 % 2 - 1)),
+                    i = s - n / 2;
+                let a = 0,
+                    r = 0,
+                    l = 0;
+                switch (Math.floor(t / 60)) {
+                case 0:
+                    [a, r, l] = [n, o, 0];
+                    break;
+                case 1:
+                    [a, r, l] = [o, n, 0];
+                    break;
+                case 2:
+                    [a, r, l] = [0, n, o];
+                    break;
+                case 3:
+                    [a, r, l] = [0, o, n];
+                    break;
+                case 4:
+                    [a, r, l] = [o, 0, n];
+                    break;
+                case 5:
+                    [a, r, l] = [n, 0, o]
+                }
+                return {
+                    r: Math.round(255 * (a + i)),
+                    g: Math.round(255 * (r + i)),
+                    b: Math.round(255 * (l + i))
+                }
+            },
+            getRelativeLuminance(t, e, s) {
+                const n = t => (t /= 255) <= .03928 ? t / 12.92 : Math.pow((t + .055) / 1.055, 2.4);
+                return .2126 * n(t) + .7152 * n(e) + .0722 * n(s)
+            },
+            getContrastRatio(t, e) {
+                const s = this.getRelativeLuminance(t.r, t.g, t.b),
+                    n = this.getRelativeLuminance(e.r, e.g, e.b),
+                    [o, i] = [Math.max(s, n), Math.min(s, n)];
+                return (o + .05) / (i + .05)
+            },
+            angleToValue(t, e) {
+                const {min: s, max: n} = MODE_RANGES[e];
+                if ("hue" === e)
+                    return Math.max(1, Math.round(t)) || 360;
+                const o = t / 360;
+                return Math.max(s, Math.min(n, Math.round(s + o * (n - s))))
+            },
+            clamp: (t, e, s) => Math.max(e, Math.min(s, t))
+        };
+    class ColorState {
+        constructor(t={})
+        {
+            this.state = {
+                hue: 360,
+                saturation: 100,
+                lightness: 50,
+                mode: "hue",
+                ...t
+            },
+            this.observers = []
+        }
+        subscribe(t)
+        {
+            return this.observers.push(t), () => this.observers = this.observers.filter((e => e !== t))
+        }
+        setState(t)
+        {
+            const e = {
+                ...this.state
+            };
+            this.state = {
+                ...this.state,
+                ...t
+            },
+            this.observers.forEach((t => t(this.state, e)))
+        }
+        get(t)
+        {
+            return t ? this.state[t] : this.state
+        }
+    }
+    class DOMManager {
+        constructor(t)
+        {
+            this.toy = t,
+            this.elements = this.cacheElements(),
+            this.lastCheckedAngle = null,
+            this.currentTransitionIndicator = null,
+            this.isInitialized = !1
+        }
+        cacheElements()
+        {
+            return {
+                root: document.documentElement,
+                fieldset: document.querySelector("fieldset"),
+                appTitle: document.querySelector(".mode-title"),
+                componentValue: document.querySelector(".component-value"),
+                copyBtn: document.getElementById("copy-btn"),
+                randomBtn: document.getElementById("random-btn"),
+                main: document.querySelector("main")
+            }
+        }
+        updateModeDisplay(t)
+        {
+            const {appTitle: e} = this.elements;
+            e.classList.add("mode-transitioning"),
+            e.textContent = MODE_LABELS[t],
+            this.elements.fieldset.className = `center mode-${t}`,
+            this.elements.fieldset.setAttribute("aria-label", `${t} selector`),
+            setTimeout((() => {
+                e.classList.remove("mode-transitioning")
+            }), 120)
+        }
+        regenerateInputs()
+        {
+            const t = this.toy.state.get("mode"),
+                e = this.toy.state.get(t);
+            this.elements.fieldset.contains(document.activeElement);
+            this.cleanupTransitionIndicator(),
+            this.elements.fieldset.classList.add("mode-transitioning"),
+            this.elements.fieldset.innerHTML = "",
+            this.generateInputs(t),
+            this.addInputListeners();
+            const s = this.elements.fieldset.querySelector(`input[value="${e}"]`);
+            s && (s.checked = !0, s.dispatchEvent(new Event("change")), s.focus()),
+            this.lastCheckedAngle = this.getAngleForValue(e, t),
+            setTimeout((() => {
+                this.elements.fieldset.classList.remove("mode-transitioning")
+            }), 600)
+        }
+        regenerateInputsWithAnimation(t, e)
+        {
+            const s = this.elements.fieldset,
+                n = this.toy.state.get("mode"),
+                o = this.toy.state.get(n),
+                i = s.contains(document.activeElement);
+            this.toy.currentCheckedInputRef = null,
+            this.cleanupTransitionIndicator(),
+            s.classList.add("mode-transitioning");
+            const a = this.isInitialized && null !== t && null !== e && Math.abs(t - e) > 1;
+            a && this.animateClockwiseTransition(t, e),
+            s.innerHTML = "",
+            requestAnimationFrame((() => {
+                this.generateInputs(n),
+                this.addInputListeners(),
+                requestAnimationFrame((() => {
+                    const t = s.querySelector(`input[value="${o}"]`);
+                    t && (t.checked = !0, i && (s.classList.contains("mode-transitioning") ? setTimeout((() => {
+                        s.contains(document.activeElement) && t.focus()
+                    }), 300) : t.focus())),
+                    this.lastCheckedAngle = this.getAngleForValue(o, n)
+                }))
+            })),
+            setTimeout((() => {
+                s.classList.remove("mode-transitioning")
+            }), a ? 600 : 400)
+        }
+        cleanupTransitionIndicator()
+        {
+            this.currentTransitionIndicator && (this.currentTransitionIndicator.remove(), this.currentTransitionIndicator = null)
+        }
+        getAngleForValue(t, e)
+        {
+            const {min: s, max: n} = MODE_RANGES[e];
+            if ("hue" === e)
+                return (t - 90 + 360) % 360;
+            return ((t - s) * (360 / (n - s + 1)) - 90 + 360) % 360
+        }
+        animateClockwiseTransition(t, e)
+        {
+            this.cleanupTransitionIndicator();
+            const s = document.createElement("div");
+            s.className = "transition-indicator",
+            s.style.willChange = "transform, opacity";
+            this.elements.main.appendChild(s),
+            this.currentTransitionIndicator = s;
+            const n = (t % 360 + 360) % 360;
+            let o = (e % 360 + 360) % 360 - n;
+            Math.abs(o) > 180 && (o = o > 0 ? o - 360 : o + 360);
+            const i = n + o;
+            s.style.setProperty("--start-angle", `${n}deg`),
+            s.style.setProperty("--end-angle", `${i}deg`),
+            s.classList.add("animate"),
+            s.addEventListener("animationend", (() => {
+                s.style.willChange = "auto",
+                s.parentNode && (s.classList.add("fade-out"), s.addEventListener("transitionend", (() => {
+                    s.parentNode && s.remove(),
+                    this.currentTransitionIndicator === s && (this.currentTransitionIndicator = null)
+                }), {
+                    once: !0
+                }))
+            }), {
+                once: !0
+            })
+        }
+        generateInputs(t, e)
+        {
+            const {min: s, max: n} = MODE_RANGES[t],
+                o = "hue" === t ? 360 : 101;
+            this.elements.fieldset.style.setProperty("--i-count", o.toString());
+            const i = document.createDocumentFragment();
+            for (let e = s; e <= n; e++)
+                i.appendChild(this.createRadioInput(e, t));
+            (e || this.elements.fieldset).appendChild(i)
+        }
+        createRadioInput(t, e)
+        {
+            const s = document.createElement("input"),
+                n = {
+                    hue: `${t} degrees`,
+                    saturation: `${t} percent saturation`,
+                    lightness: `${t} percent lightness`
+                };
+            return Object.assign(s, {
+                type: "radio",
+                name: e.charAt(0),
+                value: t
+            }), s.style.setProperty("--i", t), s.setAttribute("aria-label", n[e]), s
+        }
+        addInputListeners()
+        {
+            this.elements.fieldset.querySelectorAll('input[type="radio"]').forEach((t => {
+                t.addEventListener("mousedown", (t => {
+                    const e = this.toy.state.get("mode"),
+                        s = this.toy.state.get(e),
+                        n = parseInt(t.target.value);
+                    if (s !== n) {
+                        const t = this.getAngleForValue(s, e),
+                            o = this.getAngleForValue(n, e);
+                        this.toy.state.setState({
+                            [e]: n
+                        }),
+                        this.regenerateInputsWithAnimation(t, o)
+                    }
+                })),
+                t.addEventListener("change", (t => {
+                    if (t.target.checked) {
+                        const e = this.toy.state.get("mode"),
+                            s = parseInt(t.target.value);
+                        this.toy.state.setState({
+                            [e]: s
+                        }),
+                        this.toy.updateCheckedInput(s),
+                        this.toy.focusCurrentValue()
+                    }
+                }))
+            }))
+        }
+        updateDisplay({hue: t, saturation: e, lightness: s})
+        {
+            const {root: n, componentValue: o} = this.elements,
+                i = this.toy.state.get("mode");
+            n.style.setProperty("--hue", t),
+            n.style.setProperty("--saturation", e),
+            n.style.setProperty("--lightness", s),
+            n.style.setProperty("--color-canvas", `hsl(${t}, ${e}%, ${s}%)`);
+            const a = this.calculateDynamicColors(t, e, s);
+            n.style.setProperty("--color-dark", a.background),
+            n.style.setProperty("--color-light", a.foreground),
+            o.textContent = this.toy.state.get(i);
+            const r = document.getElementById("hueyColor");
+            if (r) {
+                r.textContent = `hsl(${t}deg, ${e}%, ${s}%`;
+                const n = document.createElement("span");
+                n.className = "ttm",
+                n.textContent = ")",
+                r.appendChild(n)
+            }
+        }
+        calculateDynamicColors(t, e, s)
+        {
+            const n = utils.hslToRgb(t, e, s);
+            let o = 25;
+            s > 80 ? o = 12 : s > 60 ? o = 18 : s > 40 && (o = 22);
+            const i = utils.clamp(.9 * e, 40, 85);
+            let a = utils.hslToRgb(t, i, o);
+            return utils.getContrastRatio(n, a) < 4.5 && (o = Math.max(8, o - 5), a = utils.hslToRgb(t, i, o)), {
+                background: `hsl(${t}, ${i}%, ${o}%)`,
+                foreground: `hsl(${t}, ${Math.min(40, .6 * i)}%, 92%)`
+            }
+        }
+    }
+    class EventManager {
+        constructor(t)
+        {
+            this.toy = t,
+            this.keyHoldStart = 0,
+            this.keyInterval = null,
+            this.isDragging = !1,
+            this.startX = 0,
+            this.startY = 0,
+            this.lastX = 0,
+            this.lastY = 0,
+            this.oldAngleOnInteractionStart = null,
+            this.boundMethods = this.bindMethods(),
+            this.cachedMeasurements = null,
+            this.measurementTimeout = null
+        }
+        cacheMeasurements()
+        {
+            const t = this.toy.elements.main.getBoundingClientRect();
+            this.cachedMeasurements = {
+                centerX: t.left + t.width / 2,
+                centerY: t.top + t.height / 2,
+                timestamp: Date.now()
+            }
+        }
+        getMeasurements()
+        {
+            const t = Date.now();
+            return (!this.cachedMeasurements || t - this.cachedMeasurements.timestamp > 100) && this.cacheMeasurements(), this.cachedMeasurements
+        }
+        handleDragStart(t)
+        {
+            t.preventDefault();
+            const e = this.toy.state.get("mode"),
+                s = this.toy.state.get(e);
+            this.oldAngleOnInteractionStart = this.toy.dom.getAngleForValue(s, e),
+            this.isDragging = !0,
+            this.cacheMeasurements(),
+            this.startX = t.touches ? t.touches[0].clientX : t.clientX,
+            this.startY = t.touches ? t.touches[0].clientY : t.clientY,
+            this.lastX = this.startX,
+            this.lastY = this.startY;
+            const {main: n, fieldset: o} = this.toy.elements;
+            n.style.cursor = "grabbing",
+            document.body.style.userSelect = "none",
+            o.classList.add("dragging"),
+            this.handleDragMove(t)
+        }
+        handleDragMove(t)
+        {
+            if (!this.isDragging)
+                return;
+            t.preventDefault();
+            const e = t.touches ? t.touches[0].clientX : t.clientX,
+                s = t.touches ? t.touches[0].clientY : t.clientY;
+            this.lastX = e,
+            this.lastY = s,
+            this.rafPending || (this.rafPending = !0, requestAnimationFrame((() => {
+                const {centerX: t, centerY: e} = this.getMeasurements(),
+                    s = this.lastX - t,
+                    n = this.lastY - e,
+                    o = (Math.atan2(n, s) * (180 / Math.PI) + 90 + 360) % 360,
+                    i = this.toy.state.get("mode"),
+                    a = utils.angleToValue(o, i);
+                a !== this.toy.state.get(i) && (this.toy.state.setState({
+                    [i]: a
+                }), this.toy.updateCheckedInput(a)),
+                this.rafPending = !1
+            })))
+        }
+        handleDragEnd()
+        {
+            if (!this.isDragging)
+                return;
+            this.isDragging = !1,
+            this.rafPending = !1,
+            this.cachedMeasurements = null;
+            const {main: t, fieldset: e} = this.toy.elements;
+            t.style.cursor = "",
+            document.body.style.userSelect = "";
+            const s = this.toy.state.get("mode"),
+                n = this.toy.state.get(s),
+                o = this.toy.dom.getAngleForValue(n, s);
+            Math.sqrt(Math.pow(this.lastX - this.startX, 2) + Math.pow(this.lastY - this.startY, 2)) >= 5 && this.toy.dom.regenerateInputsWithAnimation(this.oldAngleOnInteractionStart, o),
+            setTimeout((() => e.classList.remove("dragging")), 300),
+            this.oldAngleOnInteractionStart = null
+        }
+        resetKeyHold()
+        {
+            console.log("Resetting key hold state"),
+            this.keyHoldStart = 0,
+            this.keyInterval && (console.log("Clearing acceleration interval"), clearInterval(this.keyInterval), clearTimeout(this.keyInterval), this.keyInterval = null)
+        }
+        handleArrowNavigation(t)
+        {
+            if (t.repeat && this.keyInterval)
+                console.log("Ignoring repeat event - interval already running");
+            else {
+                if (0 === this.keyHoldStart) {
+                    this.keyHoldStart = Date.now(),
+                    console.log("Starting key hold timer at:", this.keyHoldStart);
+                    const e = ["ArrowRight", "ArrowUp"].includes(t.key);
+                    console.log("Initial step - direction:", e ? "forward" : "backward"),
+                    this.toy.navigateValue(e ? "forward" : "backward", !1)
+                }
+                if (!this.keyInterval) {
+                    const e = Date.now() - this.keyHoldStart;
+                    if (console.log("Current hold time:", e, "ms"), e >= 1200) {
+                        console.log("Starting acceleration after", e, "ms");
+                        const s = ["ArrowRight", "ArrowUp"].includes(t.key);
+                        this.keyInterval = setInterval((() => {
+                            console.log("Accelerated step - direction:", s ? "forward" : "backward"),
+                            this.toy.navigateValue(s ? "forward" : "backward", !0)
+                        }), 100)
+                    }
+                }
+            }
+        }
+        bindMethods()
+        {
+            return {
+                globalKeydown: this.handleGlobalKeydown.bind(this),
+                fieldsetKeydown: this.handleFieldsetKeydown.bind(this),
+                fieldsetKeyup: this.handleFieldsetKeyup.bind(this),
+                dragStart: this.handleDragStart.bind(this),
+                dragMove: this.handleDragMove.bind(this),
+                dragEnd: this.handleDragEnd.bind(this)
+            }
+        }
+        addListeners()
+        {
+            const {elements: t} = this.toy;
+            t.copyBtn.addEventListener("click", (() => this.toy.copyHSLToClipboard())),
+            t.randomBtn.addEventListener("click", (() => this.toy.generateRandomColor())),
+            t.appTitle.addEventListener("click", (() => this.toy.cycleModes())),
+            t.appTitle.addEventListener("touchend", (t => {
+                t.preventDefault(),
+                this.toy.cycleModes()
+            })),
+            window.addEventListener("keydown", this.boundMethods.globalKeydown, !0),
+            t.fieldset.addEventListener("keydown", this.boundMethods.fieldsetKeydown),
+            t.fieldset.addEventListener("keyup", this.boundMethods.fieldsetKeyup),
+            t.fieldset.addEventListener("blur", (e => {
+                if (e.target === t.fieldset) {
+                    const e = this.toy.state.get("mode"),
+                        s = this.toy.state.get(e),
+                        n = t.fieldset.querySelector(`input[value="${s}"]`);
+                    n && (n.checked = !0, this.toy.dom.lastCheckedAngle = this.toy.dom.getAngleForValue(s, e))
+                }
+            }), !0),
+            this.addDragListeners()
+        }
+        addDragListeners()
+        {
+            const {main: t} = this.toy.elements;
+            t.addEventListener("mousedown", this.boundMethods.dragStart),
+            document.addEventListener("mousemove", this.boundMethods.dragMove),
+            document.addEventListener("mouseup", this.boundMethods.dragEnd),
+            t.addEventListener("touchstart", this.boundMethods.dragStart, {
+                passive: !1
+            }),
+            document.addEventListener("touchmove", this.boundMethods.dragMove, {
+                passive: !1
+            }),
+            document.addEventListener("touchend", this.boundMethods.dragEnd),
+            t.addEventListener("contextmenu", (t => t.preventDefault()))
+        }
+        handleGlobalKeydown(t)
+        {
+            if (!("Tab" !== t.key || t.shiftKey || t.ctrlKey || t.altKey || t.metaKey))
+                return t.preventDefault(), void this.toy.cycleModes();
+            if (!(t.ctrlKey || t.metaKey || t.altKey || t.shiftKey || t.repeat)) {
+                const e = (t.target.tagName || "").toLowerCase();
+                if ("input" !== e && "textarea" !== e && !t.target.isContentEditable) {
+                    if ("r" === t.key)
+                        return t.preventDefault(), t.stopPropagation(), void this.toy.generateRandomColor();
+                    if ("c" === t.key)
+                        return t.preventDefault(), t.stopPropagation(), void this.toy.copyHSLToClipboard();
+                    if ("h" === t.key)
+                        return t.preventDefault(), t.stopPropagation(), void this.toy.switchMode("hue");
+                    if ("s" === t.key)
+                        return t.preventDefault(), t.stopPropagation(), void this.toy.switchMode("saturation");
+                    if ("l" === t.key)
+                        return t.preventDefault(), t.stopPropagation(), void this.toy.switchMode("lightness")
+                }
+            }
+        }
+        handleFieldsetKeydown(t)
+        {
+            const e = ["ArrowRight", "ArrowUp", "ArrowLeft", "ArrowDown"].includes(t.key),
+                s = ["Home", "End"].includes(t.key);
+            if (this.toy.elements.fieldset.classList.contains("mode-transitioning") && (e || s))
+                return void t.preventDefault();
+            if (!(t.ctrlKey || t.metaKey || t.altKey || t.shiftKey || t.repeat)) {
+                const e = (t.target.tagName || "").toLowerCase();
+                if ("input" !== e && "textarea" !== e && !t.target.isContentEditable) {
+                    if ("r" === t.key)
+                        return t.preventDefault(), t.stopPropagation(), void this.toy.generateRandomColor();
+                    if ("c" === t.key)
+                        return t.preventDefault(), t.stopPropagation(), void this.toy.copyHSLToClipboard();
+                    if ("h" === t.key)
+                        return t.preventDefault(), t.stopPropagation(), void this.toy.switchMode("hue");
+                    if ("s" === t.key)
+                        return t.preventDefault(), t.stopPropagation(), void this.toy.switchMode("saturation");
+                    if ("l" === t.key)
+                        return t.preventDefault(), t.stopPropagation(), void this.toy.switchMode("lightness")
+                }
+            }
+            if (!e && !s)
+                return;
+            t.preventDefault(),
+            t.stopPropagation();
+            const n = this.toy.state.get("mode"),
+                {min: o, max: i} = MODE_RANGES[n];
+            if ("Home" === t.key)
+                return this.toy.setValueAndFocus(o);
+            if ("End" === t.key)
+                return this.toy.setValueAndFocus(i);
+            if (e) {
+                const e = ["ArrowRight", "ArrowUp"].includes(t.key);
+                t.repeat ? this.keyInterval && "number" != typeof this.keyInterval || this.toy.navigateValue(e ? "forward" : "backward", !1) : (console.log("Initial keydown - no repeat"), this.resetKeyHold(), this.keyHoldStart = Date.now(), this.toy.navigateValue(e ? "forward" : "backward", !1), this.keyInterval || (this.keyInterval = setTimeout((() => {
+                    this.keyHoldStart > 0 && (console.log("Starting acceleration"), this.keyInterval = setInterval((() => {
+                        this.toy.navigateValue(e ? "forward" : "backward", !0)
+                    }), 100))
+                }), 1200)))
+            }
+        }
+        handleFieldsetKeyup(t)
+        {
+            ["ArrowRight", "ArrowUp", "ArrowLeft", "ArrowDown"].includes(t.key) && this.resetKeyHold()
+        }
+    }
+    class HSLColorToy {
+        constructor()
+        {
+            this.state = new ColorState(initialColor),
+            this.dom = new DOMManager(this),
+            this.elements = this.dom.elements,
+            this.currentCheckedInputRef = null,
+            this.eventManager = new EventManager(this),
+            this.init()
+        }
+        init()
+        {
+            this.state.subscribe((t => this.dom.updateDisplay(t))),
+            this.dom.generateInputs(this.state.get("mode")),
+            this.dom.addInputListeners(),
+            this.setInitialState(),
+            this.eventManager.addListeners();
+            const t = document.createElement("div");
+            t.setAttribute("aria-live", "polite"),
+            t.setAttribute("aria-atomic", "true"),
+            t.className = "vh",
+            document.body.appendChild(t)
+        }
+        setInitialState()
+        {
+            console.log("setInitialState: Initializing with mode=", this.state.get("mode"), "value=", this.state.get(this.state.get("mode")));
+            const t = this.state.get("mode"),
+                e = this.state.get(t);
+            this.dom.updateModeDisplay(t),
+            this.dom.elements.fieldset.innerHTML = "",
+            this.dom.generateInputs(t),
+            this.dom.addInputListeners(),
+            this.updateCheckedInput(e),
+            this.focusCurrentValue(),
+            this.dom.updateDisplay(this.state.get()),
+            this.dom.lastCheckedAngle = this.dom.getAngleForValue(e, t),
+            this.elements.fieldset.style.display = "grid",
+            this.elements.fieldset.style.visibility = "visible",
+            setTimeout((() => {
+                this.dom.isInitialized = !0
+            }), 100)
+        }
+        cycleModes()
+        {
+            const t = MODES.indexOf(this.state.get("mode")),
+                e = MODES[(t + 1) % MODES.length];
+            this.switchMode(e)
+        }
+        switchMode(t)
+        {
+            console.log(`switchMode: Switching from ${this.state.get("mode")} to ${t}`);
+            const e = this.state.get("mode"),
+                s = this.state.get(e),
+                n = this.dom.getAngleForValue(s, e);
+            this.state.setState({
+                mode: t
+            }),
+            this.dom.updateModeDisplay(t);
+            const o = this.state.get(t),
+                i = this.dom.getAngleForValue(o, t);
+            this.elements.fieldset.focus(),
+            this.dom.regenerateInputsWithAnimation(n, i),
+            setTimeout((() => {
+                this.elements.fieldset.focus(),
+                this.focusCurrentValue()
+            }), 600)
+        }
+        setValueAndFocus(t)
+        {
+            console.log("setValueAndFocus: Setting value to", t);
+            const e = this.state.get("mode");
+            this.state.setState({
+                [e]: t
+            }),
+            this.updateCheckedInput(t),
+            this.focusCurrentValue()
+        }
+        updateCheckedInput(t)
+        {
+            const e = this.state.get("mode"),
+                s = this.elements.fieldset;
+            s.querySelectorAll(`input[name="${e.charAt(0)}"]`).forEach((t => {
+                t.checked = !1
+            }));
+            const n = s.querySelector(`input[value="${t}"]`);
+            n && (n.checked = !0)
+        }
+        focusCurrentValue()
+        {
+            const t = this.state.get("mode"),
+                e = this.state.get(t),
+                s = this.elements.fieldset.querySelector(`input[value="${e}"]`);
+            s && (s.checked = !0, s.focus())
+        }
+        navigateValue(t, e=!1)
+        {
+            console.log("navigateValue: Direction:", t, "Accelerated:", e);
+            const s = this.state.get("mode"),
+                n = this.state.get(s);
+            let o;
+            console.log("navigateValue: Current value for mode", s, ":", n),
+            o = "hue" === s ? e ? 9 : 1 : e ? 3 : 1,
+            console.log("navigateValue: Current value:", n, "Step:", o);
+            const {min: i, max: a} = MODE_RANGES[s];
+            let r;
+            "forward" === t ? (r = n + o, r = "hue" === s ? r > a ? r - 360 : r : r > a ? i : r) : (r = n - o, r = "hue" === s ? r < i ? 360 + r : r : r < i ? a : r),
+            console.log("navigateValue: New value calculated:", r),
+            this.setValueAndFocus(r)
+        }
+        generateRandomColor()
+        {
+            console.log("generateRandomColor: Generating a new random color.");
+            const t = this.state.get("mode"),
+                e = this.state.get(t),
+                s = this.dom.getAngleForValue(e, t);
+            this.state.setState({
+                hue: Math.floor(360 * Math.random()) + 1,
+                saturation: Math.floor(101 * Math.random()),
+                lightness: Math.floor(101 * Math.random())
+            });
+            const n = this.state.get(t),
+                o = this.dom.getAngleForValue(n, t);
+            this.dom.regenerateInputsWithAnimation(s, o)
+        }
+        async copyHSLToClipboard()
+        {
+            console.log("copyHSLToClipboard: Attempting to copy HSL to clipboard.");
+            const {hue: t, saturation: e, lightness: s} = this.state.get(),
+                n = `hsl(${t}deg, ${e}%, ${s}%)`;
+            try {
+                await navigator.clipboard.writeText(n),
+                this.showCopySuccess(),
+                console.log("copyHSLToClipboard: Successfully copied:", n)
+            } catch (t) {
+                this.fallbackCopy(n),
+                this.showCopySuccess(),
+                console.error("copyHSLToClipboard: Failed to copy, falling back:", t)
+            }
+        }
+        fallbackCopy(t)
+        {
+            console.log("fallbackCopy: Using fallback copy method.");
+            const e = Object.assign(document.createElement("textarea"), {
+                value: t
+            });
+            document.body.appendChild(e),
+            e.select(),
+            document.execCommand("copy"),
+            document.body.removeChild(e)
+        }
+        showCopySuccess()
+        {
+            console.log("showCopySuccess: Showing copy success animation."),
+            this.elements.copyBtn.classList.add("copy-success"),
+            setTimeout((() => this.elements.copyBtn.classList.remove("copy-success")), 1e3)
+        }
+    }
+    document.addEventListener("DOMContentLoaded", (() => {
+        try {
+            new HSLColorToy,
+            console.log("HSL Color Toy initialized successfully.")
+        } catch (t) {
+            console.error("Error initializing HSL Color Toy:", t)
+        }
+    }));
+    const keyboardShortcuts = {
+        h: "Switch to Hue mode",
+        s: "Switch to Saturation mode",
+        l: "Switch to Lightness mode",
+        r: "Generate random color",
+        c: "Copy current color"
+    };
+    </script>
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"dfe42d80a9c34c628547970375380ed2","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
+
+</html>
