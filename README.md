@@ -1,5 +1,5 @@
-# repo template
+# Huey
 
-description
+HSL color toy
 
-[heuy.timagineer.com](https://huey.timagineer.com)
+[huey.timpish.com](https://huey.timpish.com)
