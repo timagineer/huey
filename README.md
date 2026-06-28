@@ -2,4 +2,4 @@
 
 description
 
-[tmpl.timagineer.com](https://tmpl.timagineer.com)
+[heuy.timagineer.com](https://huey.timagineer.com)
