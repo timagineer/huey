@@ -203,13 +203,13 @@ input {
     touch-action: manipulation;
     transform: translate3d(calc(cos(var(--angle)) * var(--diameter)), calc(sin(var(--angle)) * var(--diameter)), 0);
     will-change: transform;
-    transition: transform 480ms var(--ease-io-circular), background-color 480ms ease-out;
+    transition: transform 480ms var(--ease-io-circular), background-color 480ms ease;
 }
 
 :where(input:checked, input:focus-visible) {
     outline: 3px solid var(--color-light);
     z-index: var(--top);
-    transition: transform 480ms var(--ease-io-circular), background-color 480ms ease-out, outline 0.1s ease-out;
+    transition: transform 480ms var(--ease-io-circular), background-color 480ms ease, outline 0.1s ease;
 }
 
 input:focus {
@@ -249,7 +249,7 @@ input:focus {
 
 .transition-indicator.fade-out {
     opacity: 0;
-    transition: opacity 0.2s ease-out;
+    transition: opacity 0.2s ease;
 }
 
 fieldset.mode-transitioning {
@@ -257,11 +257,11 @@ fieldset.mode-transitioning {
 }
 
 fieldset.mode-transitioning input {
-    transition: transform 480ms var(--ease-io-circular), background-color 480ms ease-out;
+    transition: transform 480ms var(--ease-io-circular), background-color 480ms ease;
 }
 
 .mode-hue input, .mode-saturation input, .mode-lightness input {
-    transition: background-color 480ms ease-out;
+    transition: background-color 480ms ease;
 }
 
 .mode-hue input {
@@ -446,7 +446,7 @@ footer small:nth-of-type(2):active, footer small:nth-of-type(2):focus-visible {
 .icon {
     height: 2.6cap;
     width: 2.6cap;
-    transition: opacity 300ms ease-in-out 240ms;
+    transition: opacity 300ms ease 240ms;
 }
 
 dialog .icon {
